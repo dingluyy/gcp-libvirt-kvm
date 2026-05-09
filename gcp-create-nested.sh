@@ -3,8 +3,8 @@
 
 set -euo pipefail
 
-INSTANCE_NAME='starry-kvm-1' # 实例名称
-INSTANCE_TEMPLATE='starry-kvm-debian-8c16g' # 实例 Template
+INSTANCE_NAME='dinglu-kvm-1' # 实例名称
+INSTANCE_TEMPLATE='dinglu-kvm-debian-8c16g' # 实例 Template
 
 echo "Creating Instance ${INSTANCE_NAME}"
 echo "Using template: $INSTANCE_TEMPLATE"
@@ -17,13 +17,12 @@ gcloud compute instances create ${INSTANCE_NAME} \
   --source-instance-template="projects/ei-container-platform-dev/regions/asia-northeast1/instanceTemplates/$INSTANCE_TEMPLATE" \
   --custom-cpu=12 \
   --custom-memory=22G \
-  --boot-disk-size="200G" \
-  --provisioning-model=SPOT
+  --boot-disk-size="200G"
 
   # --machine-type="n1-standard-16" \
 
-# starry-kvm-debian-8c16g: 8C 16G Debian 12, can run 3 nested KVM
-# starry-kvm-ubuntu-8c16g: 8C 16G Ubuntu 20.04 LTS, can run 3 nested KVM
+# dinglu-kvm-debian-8c16g: 8C 16G Debian 12, can run 3 nested KVM
+# dinglu-kvm-ubuntu-8c16g: 8C 16G Ubuntu 20.04 LTS, can run 3 nested KVM
 
   # Other options:
   # --machine-type="n1-standard-16" \

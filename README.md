@@ -5,7 +5,7 @@
 ## Usage
 
 ```sh
-git clone https://github.com/STARRY-S/gcp-libvirt-kvm.git && cd gcp-libvirt-kvm/
+git clone https://github.com/dingluyy/gcp-libvirt-kvm.git && cd gcp-libvirt-kvm/
 ```
 
 ## Launch GCP instance
@@ -17,12 +17,18 @@ vim ./gcp-create-nested.sh # 编辑实例名称，并按需要调整实例 Templ
 ./gcp-create-nested.sh
 ```
 
+## Deploy Rancher
+
+GCP 虚拟机创建成功后，SSH 进入 GCP 虚拟机中，Helm 部署 Rancher Prime。
+
 ## Launch libvirt VM
 
 GCP 虚拟机创建成功后，SSH 进入 GCP 虚拟机中，执行脚本安装 libvirt 并启动虚拟机实例。
 
 ```sh
-git clone https://github.com/STARRY-S/gcp-libvirt-kvm.git && cd gcp-libvirt-kvm/
+apt update
+apt install -y git
+git clone https://github.com/dingluyy/gcp-libvirt-kvm.git && cd gcp-libvirt-kvm/
 
 # 执行脚本在 GCP 实例中安装 libvirt，并创建 KVM 嵌套虚拟机
 ./prepare-libvirt.sh
@@ -97,19 +103,32 @@ $ ssh ubuntu@fd00:cafe::103
 
     ![](images/03.png)
 
-    - ClusterCIDR: `10.42.0.0/16,fd01:cafe:0042::/52`
-    - ServiceCIDR: `10.43.0.0/16,fd01:cafe:0043::/112`
-    - ClusterDNS: `10.43.0.10`
+    - ClusterCIDR: `10.42.0.0/16,fd00:cafe:0042::/56`
+    - ServiceCIDR: `10.43.0.0/16,fd00:cafe:0043::/112`
+    - ClusterDNS: `10.43.0.10,fd00:cafe:0043::10`
+
+1. 部署 Rancher FlatNetwork V2，设置 Cluster CIDR & Service CIDR 的 IPv6 地址。
+
+    ![](images/04.png)
+
+    - ClusterCIDR: `10.42.0.0/16,fd00:cafe:0042::/56`
+    - ServiceCIDR: `10.43.0.0/16,fd00:cafe:0043::/112`
+
+1. Rancher FlatNetwork V2 部署成功后，创建 FlatNetwork Subnet，设置 CIDR 的 IPv6 地址。例如：fd00:abcd::/64。
 
 1. 集群 Pod 会被自动添加 IPv6 IP。
 
-    ![](images/04.png)
+    ![](images/05.png)
+
+> [!NOTE]
+>
+> 非 IPv6集群，跳过步骤 1 至 3，步骤 4 和 5 设置 IPv4 地址。集群 Pod 只自动添加 IPv4 IP。
 
 # LICENSE
 
 MIT License
 
-Copyright (c) 2025 STARRY-S
+Copyright (c) 2026 dingluyy
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
